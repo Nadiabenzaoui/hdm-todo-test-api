@@ -36,6 +36,7 @@ export default class TaskRepository {
       },
       data: {
         name: dto.name,
+        updatedAt: new Date(),
       },
     });
   }

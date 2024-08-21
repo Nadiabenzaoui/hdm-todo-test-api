@@ -12,6 +12,7 @@ import GetAllTasksUseCase from '../UseCase/GetAllTasks/GetAllTasksUseCase';
 import SaveTaskUseCase from '../UseCase/SaveTask/SaveTaskUseCase';
 import SaveTaskDto from '../UseCase/SaveTask/SaveTaskDto';
 import UseCaseFactory from '../UseCase/UseCaseFactory';
+import EditTask from 'src/UseCase/EditTask/EditTask';
 
 @Controller()
 export default class TaskController {
@@ -29,9 +30,10 @@ export default class TaskController {
   }
 
   @Patch('/tasks/:id')
-  async update(@Body() dto: SaveTaskDto) {
+  async update(@Body() dto: SaveTaskDto, @Param('id') id: number) {
     // @todo YOU MUST FOLLOW THE SAME IMPLEMENTATION AS OTHER ENDPOINTS
-    return (await this.useCaseFactory.create(SaveTaskUseCase)).handle(dto);
+    dto.id = Number(id);
+    return (await this.useCaseFactory.create(EditTask)).handle(dto);
   }
 
   @Delete('/tasks/:id')
