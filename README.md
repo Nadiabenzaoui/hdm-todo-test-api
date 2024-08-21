@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Backend - Explication du développement
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Choix et décisions
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Structure du projet
+En tant qu'étudiant, j'ai choisi d'organiser le backend de l'application de manière modulaire, en séparant les différentes entités (tâches, utilisateurs, etc.) dans des modules distincts. Cela permet de maintenir un code plus lisible et évolutif à long terme.
 
-## Description
+### Utilisation de NestJS
+Pour le développement du backend, j'ai décidé d'utiliser le framework NestJS. Celui-ci offre une architecture basée sur les modules, les services et les contrôleurs, qui correspond bien aux bonnes pratiques de développement backend. De plus, NestJS intègre nativement la gestion des dépendances via l'injection de dépendances, ce qui facilite la testabilité et la maintenabilité du code.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Intégration de Prisma
+J'ai choisi d'utiliser Prisma comme ORM (Object-Relational Mapping) pour interagir avec la base de données. Prisma permet de générer automatiquement le client de la base de données à partir du schéma, ce qui réduit considérablement le code boilerplate nécessaire pour les opérations CRUD.
 
-## Installation
+## Première étape : Préparation de l'environnement de développement
 
-```bash
-$ yarn install
-```
+1. **Forker et cloner les dépôts** :
+   - J'ai commencé par forker et cloner les deux dépôts de mon projet. Cela m'a permis d'avoir une copie locale des sources sur laquelle travailler.
 
-## Running the app
+2. **Préparer la base de données** :
+   - Comme l'image Docker MySQL fournie ne fonctionnait pas avec mon architecture ARM64, j'ai décidé d'installer la base de données MySQL directement sur ma machine.
+   - Je me suis connecté à MySQL en utilisant la commande `mysql -u root -p` et le mot de passe présent dans le fichier `.env`.
 
-```bash
-# development
-$ yarn run start
+3. **Créer la base de données** :
+   - Après m'être connecté à MySQL, j'ai créé la base de données `hdmtestdev` avec la commande SQL `CREATE DATABASE hdmtestdev;`.
 
-# watch mode
-$ yarn run start:dev
+4. **Exécuter les migrations Prisma** :
+   - Après avoir préparé la base de données, j'ai exécuté les commandes Prisma présentes dans le fichier `package.json` pour générer le client Prisma et appliquer les migrations.
+   - `yarn prisma:generate` : Cette commande a généré le client Prisma à partir de mon schéma de base de données.
+   - `yarn prisma:migrate:run` : Cette commande a appliqué les migrations Prisma sur ma base de données.
 
-# production mode
-$ yarn run start:prod
-```
+## Deuxième étape : Démarrage du serveur backend
 
-## Test
+1. **Lancer le serveur en mode développement** :
+   - Une fois que l'environnement de développement était prêt, j'ai lancé le serveur backend en mode développement avec la commande `yarn start:dev`.
 
-```bash
-# unit tests
-$ yarn run test
+2. **Exécuter la commande `yarn start`** :
+   - Cependant, lorsque j'ai exécuté la commande `yarn start`, une erreur est apparue indiquant que la commande "start" n'était pas trouvée.
 
-# e2e tests
-$ yarn run test:e2e
+3. **Ajouter la commande `start` dans le `package.json`** :
+   - Après avoir vérifié le fichier `package.json`, j'ai remarqué que la commande `start` n'y était pas définie.
+   - J'ai donc ajouté la ligne `"start": "vite"` dans la section `scripts` du `package.json`.
 
-# test coverage
-$ yarn run test:cov
-```
+4. **Lancer l'application** :
+   - Après avoir ajouté la commande `start`, j'ai pu lancer l'application avec succès en utilisant la commande `yarn start`.
+   - Cela m'a permis d'accéder à l'application en local à l'adresse `http://localhost:5173/`.
 
-## Support
+## Contrôleurs (Controllers)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Les contrôleurs dans mon backend NestJS sont chargés de gérer les points d'entrée de l'API. Ils reçoivent donc les requêtes entrantes, interagissent avec les services et renvoient les réponses. Cette séparation des responsabilités entre les contrôleurs et les services permet de maintenir une architecture modulaire et testable.
 
-## Stay in touch
+Par exemple, j'ai un contrôleur `TaskController` qui exposerait des endpoints comme `/tasks`, `/tasks/:id`, `/tasks/create`, `/tasks/:id/`. Ce contrôleur interagirait avec un service `TaskController` pour effectuer les opérations CRUD sur les tâches.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Classes Factory (ServiceFactory)
 
-## License
+Mon projet utilise une classe abstraite `ServiceFactory` qui joue le rôle de fabrique d'instances pour mes cas d'utilisation (UseCase). Cette classe encapsule la logique d'instanciation et d'injection de dépendances, ce qui permet de découpler la création des instances des cas d'utilisation du reste de mon application.
 
-Nest is [MIT licensed](LICENSE).
+La méthode `create<T extends U>(type: Type<T>): Promise<T>` de cette classe factory me permet de créer facilement des instances de mes cas d'utilisation, en m'abstrayant des détails d'implémentation.
+
+## Cas d'utilisation (UseCases)
+
+Les cas d'utilisation sont des classes qui encapsulent la logique métier de mon application. Ils sont découplés des contrôleurs et des services, ce qui facilite leur réutilisation et leur testabilité.
+
+Par exemple, j'ai un cas d'utilisation `CreateTaskUseCase` qui est chargé de la création d'une nouvelle tâche. Ce cas d'utilisation interagit avec un référentiel (repository) de tâches pour effectuer l'opération de création.
+
+En utilisant cette architecture basée sur les cas d'utilisation, je favorise la maintenabilité, la testabilité et la réutilisabilité de mon code backend.
+
+## Points de blocage rencontrés
+
+### Préparation de l'environnement de développement
+Lors de la configuration de l'environnement de développement, j'ai rencontré quelques difficultés, notamment avec l'utilisation de l'image Docker MySQL qui ne fonctionnait pas avec mon architecture ARM64. J'ai donc dû installer MySQL directement sur ma machine et configurer les variables d'environnement en conséquence.
+
+### Intégration de Prisma
+L'intégration de Prisma dans le projet a également nécessité quelques ajustements. J'ai dû bien comprendre les commandes Prisma (`prisma:generate`, `prisma:migrate:run`) et les intégrer dans les scripts n pour faciliter l'exécution des migrations lors du développement.
+
+### Problèmes de typage TypeScript
+Au début du développement, j'ai également rencontré quelques problèmes liés au typage en TypeScript. Par exemple, lorsque j'ai essayé de déclarer un paramètre de type "string et number", le compilateur a signalé une erreur, car en TypeScript, les variables et les paramètres doivent avoir un type unique et spécifique
